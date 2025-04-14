@@ -82,7 +82,7 @@ Rcpp::List cjmle_expr_cpp(const arma::mat &response, const arma::mat &nonmis_ind
     theta1 = Update_theta_cpp(theta0, response, nonmis_ind, A0, cc, theta_init_step);
     A1 = Update_A_cpp(A0, response, nonmis_ind, theta1, cc, A_init_step);
     eps = neg_loglik(theta0*A0.t(), response, nonmis_ind) - neg_loglik(theta1*A1.t(), response, nonmis_ind);
-    m=m+1
+    m=m+1;
     // if(print_proc) Rprintf("\n eps: %f", eps);
     if(print_proc){
       double dist = (log(eps)-log(N*J)) / (log(tol)-log(N*J));
