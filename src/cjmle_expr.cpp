@@ -75,12 +75,14 @@ Rcpp::List cjmle_expr_cpp(const arma::mat &response, const arma::mat &nonmis_ind
   double A_init_step = mean(A_step)/2;
   
   double eps = neg_loglik(theta0*A0.t(), response, nonmis_ind) - neg_loglik(theta1*A1.t(), response, nonmis_ind);
+  int m=0;
   while(eps > tol){
     theta0 = theta1;
     A0 = A1;
     theta1 = Update_theta_cpp(theta0, response, nonmis_ind, A0, cc, theta_init_step);
     A1 = Update_A_cpp(A0, response, nonmis_ind, theta1, cc, A_init_step);
     eps = neg_loglik(theta0*A0.t(), response, nonmis_ind) - neg_loglik(theta1*A1.t(), response, nonmis_ind);
+    m=m+1
     // if(print_proc) Rprintf("\n eps: %f", eps);
     if(print_proc){
       double dist = (log(eps)-log(N*J)) / (log(tol)-log(N*J));
@@ -97,7 +99,8 @@ Rcpp::List cjmle_expr_cpp(const arma::mat &response, const arma::mat &nonmis_ind
   }
   return Rcpp::List::create(Rcpp::Named("A") = A1,
                             Rcpp::Named("theta") = theta1,
-                            Rcpp::Named("obj") = neg_loglik(theta1*A1.t(), response, nonmis_ind));
+                            Rcpp::Named("obj") = neg_loglik(theta1*A1.t(), response, nonmis_ind),
+                            Rcpp::Named("num_iter")=m);
 }
 
 // Rcpp::List cjmle_expr_simu(const arma::mat &response, const arma::mat &nonmis_ind, arma::mat theta0,

@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // grad_neg_loglik_A_j_conf_cpp
 arma::vec grad_neg_loglik_A_j_conf_cpp(const arma::vec& response_j, const arma::vec& nonmis_ind_j, const arma::vec& A_j, const arma::vec& Q_j, const arma::mat& theta);
 RcppExport SEXP _mirtjml_grad_neg_loglik_A_j_conf_cpp(SEXP response_jSEXP, SEXP nonmis_ind_jSEXP, SEXP A_jSEXP, SEXP Q_jSEXP, SEXP thetaSEXP) {
